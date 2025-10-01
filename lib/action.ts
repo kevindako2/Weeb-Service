@@ -26,7 +26,6 @@ export const createPitch = async (
     const slug = slugify(title as string, { lower: true, strict: true });
 
     try {
-        // Check if author exists by name
         let authorId = session?.id;
         
         if (authorName && typeof authorName === 'string') {
@@ -38,7 +37,6 @@ export const createPitch = async (
             if (existingAuthor) {
                 authorId = existingAuthor._id;
             } else {
-                // Create new author
                 const newAuthor = await writeClient.create({
                     _type: "author",
                     name: authorName,

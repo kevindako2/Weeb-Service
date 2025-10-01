@@ -21,7 +21,6 @@ export default function UserProfileClient({ user }: UserProfileClientProps) {
     const [previewImage, setPreviewImage] = useState(user.image || "");
 
     const handleImageUpdate = async () => {
-        // TODO: Implement image update logic with Sanity
         setPreviewImage(imageUrl);
         setIsDialogOpen(false);
     };
