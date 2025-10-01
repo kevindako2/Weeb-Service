@@ -17,5 +17,6 @@ export const formSchema = z.object({
                 return false;
             }
         }),
+    authorName: z.string().min(2).max(100),
     pitch: z.string().min(10),
 });

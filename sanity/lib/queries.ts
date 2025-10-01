@@ -55,3 +55,11 @@ export const PLAYLIST_BY_SLUG_QUERY =
     pitch
   }
 }`);
+
+export const AUTHORS_QUERY =
+    defineQuery(`*[_type == "author"] | order(name asc) {
+  _id,
+  name,
+  username,
+  image
+}`);

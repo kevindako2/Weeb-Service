@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { parseServerActionResponse } from "@/lib/utils";
 import slugify from "slugify";
 import { writeClient } from "@/sanity/lib/write-client";
+import { client } from "@/sanity/lib/client";
 
 export const createPitch = async (
     state: any,
@@ -18,13 +19,37 @@ export const createPitch = async (
             status: "ERROR",
         });
 
-    const { title, description, category, link } = Object.fromEntries(
+    const { title, description, category, link, authorName } = Object.fromEntries(
         Array.from(form).filter(([key]) => key !== "pitch"),
     );
 
     const slug = slugify(title as string, { lower: true, strict: true });
 
     try {
+        // Check if author exists by name
+        let authorId = session?.id;
+        
+        if (authorName && typeof authorName === 'string') {
+            const existingAuthor = await client.fetch(
+                `*[_type == "author" && name == $name][0]{ _id }`,
+                { name: authorName }
+            );
+
+            if (existingAuthor) {
+                authorId = existingAuthor._id;
+            } else {
+                // Create new author
+                const newAuthor = await writeClient.create({
+                    _type: "author",
+                    name: authorName,
+                    username: authorName.toLowerCase().replace(/\s+/g, ''),
+                    image: session.user?.image || "",
+                    email: session.user?.email || "",
+                });
+                authorId = newAuthor._id;
+            }
+        }
+
         const startup = {
             title,
             description,
@@ -36,9 +61,10 @@ export const createPitch = async (
             },
             author: {
                 _type: "reference",
-                _ref: session?.id,
+                _ref: authorId,
             },
             pitch,
+            views: 0,
         };
 
         const result = await writeClient.create({ _type: "startup", ...startup });

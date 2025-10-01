@@ -11,13 +11,47 @@ import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import {createPitch} from "@/lib/action";
-//import { createPitch } from "@/lib/actions";
+import { Session } from "next-auth";
 
-const StartupForm = () => {
+interface Author {
+    _id: string;
+    name: string;
+    username?: string;
+    image?: string;
+}
+
+interface StartupFormProps {
+    authors: Author[];
+    session: Session;
+}
+
+const StartupForm = ({ authors, session }: StartupFormProps) => {
     const [errors, setErrors] = useState<Record<string, string>>({});
     const [pitch, setPitch] = useState("");
+    const [authorName, setAuthorName] = useState(session.user?.name || "");
+    const [filteredAuthors, setFilteredAuthors] = useState<Author[]>(authors);
+    const [showSuggestions, setShowSuggestions] = useState(false);
     const { toast } = useToast();
     const router = useRouter();
+
+    const handleAuthorChange = (value: string) => {
+        setAuthorName(value);
+        if (value.trim()) {
+            const filtered = authors.filter(author =>
+                author.name.toLowerCase().includes(value.toLowerCase())
+            );
+            setFilteredAuthors(filtered);
+            setShowSuggestions(true);
+        } else {
+            setFilteredAuthors(authors);
+            setShowSuggestions(false);
+        }
+    };
+
+    const selectAuthor = (author: Author) => {
+        setAuthorName(author.name);
+        setShowSuggestions(false);
+    };
 
     const handleFormSubmit = async (prevState: any, formData: FormData) => {
         try {
@@ -26,6 +60,7 @@ const StartupForm = () => {
                 description: formData.get("description") as string,
                 category: formData.get("category") as string,
                 link: formData.get("link") as string,
+                authorName: formData.get("authorName") as string,
                 pitch,
             };
 
@@ -141,6 +176,55 @@ const StartupForm = () => {
                 />
 
                 {errors.link && <p className="startup-form_error">{errors.link}</p>}
+            </div>
+
+            <div className="relative">
+                <label htmlFor="authorName" className="startup-form_label">
+                    Author Name
+                </label>
+                <Input
+                    id="authorName"
+                    name="authorName"
+                    className="startup-form_input"
+                    required
+                    placeholder="Enter author name"
+                    value={authorName}
+                    onChange={(e) => handleAuthorChange(e.target.value)}
+                    onFocus={() => setShowSuggestions(true)}
+                    onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                />
+
+                {showSuggestions && filteredAuthors.length > 0 && (
+                    <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                        {filteredAuthors.map((author) => (
+                            <button
+                                key={author._id}
+                                type="button"
+                                onClick={() => selectAuthor(author)}
+                                className="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
+                            >
+                                {author.image && (
+                                    <img
+                                        src={author.image}
+                                        alt={author.name}
+                                        className="w-8 h-8 rounded-full object-cover"
+                                    />
+                                )}
+                                <div>
+                                    <p className="font-medium">{author.name}</p>
+                                    {author.username && (
+                                        <p className="text-sm text-gray-500">@{author.username}</p>
+                                    )}
+                                </div>
+                            </button>
+                        ))}
+                    </div>
+                )}
+
+                {errors.authorName && <p className="startup-form_error">{errors.authorName}</p>}
+                <p className="text-sm text-gray-500 mt-1">
+                    Start typing to select an existing author or enter a new name
+                </p>
             </div>
 
             <div data-color-mode="light">
