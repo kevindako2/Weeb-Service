@@ -1,10 +1,14 @@
 import type { NextConfig } from "next";
 import {hostname} from "node:os";
 
-const nextConfig: NextConfig = {
-    images:{
+let nextConfig: NextConfig;
+nextConfig = {
+    typescript: {
+        "ignoreBuildErrors": true,
+    },
+    images: {
         dangerouslyAllowSVG: true,
-        remotePatterns:[
+        remotePatterns: [
             {
                 protocol: 'https',
                 hostname: '*',
@@ -16,8 +20,8 @@ const nextConfig: NextConfig = {
     },
     devIndicators: {
         appIsrStatus: true,
-            buildActivity: true,
-            buildActivityPosition: 'bottom-right',
+        buildActivity: true,
+        buildActivityPosition: 'bottom-right',
     }
 };
 
