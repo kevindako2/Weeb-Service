@@ -4,6 +4,8 @@ import Script from "next/script";
 import "./globals.css";
 import React from "react";
 import 'easymde/dist/easymde.min.css';
+import Analytics from "./analytics";
+import {GoogleAnalytics} from "@next/third-parties/google";
 
 const workSans = localFont({
     src: [
@@ -31,28 +33,11 @@ export default function RootLayout({
 }) {
     return (
         <html lang="fr" className={workSans.variable}>
-        <head>
-            {/* ✅ Google Analytics Scripts */}
-            <Script
-                strategy="afterInteractive"
-                src="https://www.googletagmanager.com/gtag/js?id=G-FMKNGQECW9"
-            />
-            <Script
-                id="gtag-init"
-                strategy="afterInteractive"
-                dangerouslySetInnerHTML={{
-                    __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-XXXXXXX', {
-                page_path: window.location.pathname,
-              });
-            `,
-                }}
-            />
-        </head>
-        <body>{children}</body>
+        <body>
+
+        {children}
+        <GoogleAnalytics gaId="G-FMKNGQECW9" />
+        </body>
         </html>
     );
 }
