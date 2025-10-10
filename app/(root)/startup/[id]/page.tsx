@@ -17,6 +17,7 @@ import StartupCard, { StartupTypeCard } from "@/components/ui/StartupCard";
 const md = markdownit();
 
 export const experimental_ppr = true;
+export const dynamic = 'force-dynamic';
 
 const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
     const id = (await params).id;
