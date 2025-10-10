@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import {hostname} from "node:os";
 
 let nextConfig: NextConfig;
 nextConfig = {
