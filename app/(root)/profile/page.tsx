@@ -123,16 +123,9 @@ const ProfilePage = async () => {
                                 </ul>
                             ) : (
                                 <div className="bg-white-100 p-12 rounded-lg text-center">
-                                    <p className="text-30-bold text-black-300 mb-2">0</p>
-                                    <p className="text-16-medium text-black-300 mb-4">
+                                    <p className="text-16-medium text-black-300">
                                         Vous n'avez pas encore de projet
                                     </p>
-                                    <Link 
-                                        href="/startup/create" 
-                                        className="inline-block px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-                                    >
-                                        Créer mon premier projet
-                                    </Link>
                                 </div>
                             )}
                         </Suspense>

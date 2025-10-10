@@ -65,7 +65,7 @@ export default function UserProfileClient({ user }: UserProfileClientProps) {
                                 <p className="text-xs text-gray-500 truncate">{user.email}</p>
                             </div>
                             <a
-                                href={`/user/${user.id}`}
+                                href="/profile"
                                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                 onClick={() => setIsMenuOpen(false)}
                             >

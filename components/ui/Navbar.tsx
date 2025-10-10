@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { auth, signIn, signOut } from "@/auth";
+import { auth } from "@/auth";
 import UserProfileClient from "./UserProfileClient";
+import LoginMenu from "./LoginMenu";
 
 const Navbar = async () => {
     const session = await auth();
@@ -17,9 +18,11 @@ const Navbar = async () => {
                     <Link href="/" className="text-black hover:text-primary transition-colors">
                         Home
                     </Link>
-                    <Link href="/startup/create" className="text-black hover:text-primary transition-colors">
-                        Create
-                    </Link>
+                    {session?.user && (
+                        <Link href="/startup/create" className="text-black hover:text-primary transition-colors">
+                            Create
+                        </Link>
+                    )}
 
                     {session?.user ? (
                         <UserProfileClient 
@@ -31,28 +34,7 @@ const Navbar = async () => {
                             }}
                         />
                     ) : (
-                        <div className="flex gap-3">
-                            <form
-                                action={async () => {
-                                    "use server";
-                                    await signIn("github");
-                                }}
-                            >
-                                <button className="text-black hover:text-primary transition-colors" type="submit">
-                                    Login with GitHub
-                                </button>
-                            </form>
-                            <form
-                                action={async () => {
-                                    "use server";
-                                    await signIn("google");
-                                }}
-                            >
-                                <button className="text-black hover:text-primary transition-colors" type="submit">
-                                    Login with Google
-                                </button>
-                            </form>
-                        </div>
+                        <LoginMenu />
                     )}
                 </div>
             </nav>
