@@ -31,16 +31,28 @@ const Navbar = async () => {
                             }}
                         />
                     ) : (
-                        <form
-                            action={async () => {
-                                "use server";
-                                await signIn("github");
-                            }}
-                        >
-                            <button className="text-black hover:text-primary transition-colors" type="submit">
-                                Login
-                            </button>
-                        </form>
+                        <div className="flex gap-3">
+                            <form
+                                action={async () => {
+                                    "use server";
+                                    await signIn("github");
+                                }}
+                            >
+                                <button className="text-black hover:text-primary transition-colors" type="submit">
+                                    Login with GitHub
+                                </button>
+                            </form>
+                            <form
+                                action={async () => {
+                                    "use server";
+                                    await signIn("google");
+                                }}
+                            >
+                                <button className="text-black hover:text-primary transition-colors" type="submit">
+                                    Login with Google
+                                </button>
+                            </form>
+                        </div>
                     )}
                 </div>
             </nav>

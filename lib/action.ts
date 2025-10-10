@@ -6,6 +6,21 @@ import slugify from "slugify";
 import { writeClient } from "@/sanity/lib/write-client";
 import { client } from "@/sanity/lib/client";
 
+export const incrementViews = async (id: string) => {
+    try {
+        await writeClient
+            .patch(id)
+            .setIfMissing({ views: 0 })
+            .inc({ views: 1 })
+            .commit();
+
+        return { success: true };
+    } catch (error) {
+        console.error("Error incrementing views:", error);
+        return { success: false, error };
+    }
+};
+
 export const createPitch = async (
     state: any,
     form: FormData,
