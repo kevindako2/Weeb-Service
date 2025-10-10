@@ -60,8 +60,6 @@ const UserProfilePage = async ({ params }: { params: Promise<{ id: string }> }) 
                         </div>
                     )}
 
-                    <hr className="divider" />
-
                     <div className="mt-10">
                         <div className="flex items-center justify-between mb-7">
                             <h2 className="text-30-bold">
