@@ -14,7 +14,6 @@ export default function LoginMenu() {
 
     return (
         <div className="relative">
-            {/* Login Button */}
             <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="text-black hover:text-primary transition-colors flex items-center gap-2"
@@ -23,7 +22,6 @@ export default function LoginMenu() {
                 Login
             </button>
 
-            {/* Dropdown Menu */}
             {isMenuOpen && (
                 <>
                     <div

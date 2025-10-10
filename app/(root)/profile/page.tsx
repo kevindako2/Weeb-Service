@@ -17,7 +17,6 @@ const ProfilePage = async () => {
         redirect("/");
     }
 
-    // Essayer de trouver l'auteur Sanity correspondant
     const sanityAuthor = await client.fetch(
         `*[_type == "author" && email == $email][0]{
             _id,
@@ -30,7 +29,6 @@ const ProfilePage = async () => {
         { email: session.user.email }
     );
 
-    // Récupérer les projets si l'auteur existe dans Sanity
     let userStartups = [];
     if (sanityAuthor?._id) {
         userStartups = await client.fetch(STARTUPS_BY_AUTHOR_QUERY, { id: sanityAuthor._id });
@@ -63,7 +61,6 @@ const ProfilePage = async () => {
 
             <section className="section_container">
                 <div className="max-w-5xl mx-auto">
-                    {/* Bio Section */}
                     {sanityAuthor?.bio ? (
                         <div className="mb-10">
                             <h2 className="text-30-bold mb-4">À propos</h2>
@@ -98,7 +95,6 @@ const ProfilePage = async () => {
 
                     <hr className="divider" />
 
-                    {/* Startups Section */}
                     <div className="mt-10">
                         <div className="flex items-center justify-between mb-7">
                             <h2 className="text-30-bold">

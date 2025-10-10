@@ -8,7 +8,6 @@ const Footer = () => {
         <footer className="bg-black-200 text-white py-12 mt-20 font-work-sans">
             <div className="max-w-7xl mx-auto px-5">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                    {/* Logo & Description */}
                     <div className="col-span-1 md:col-span-2">
                         <Link href="/" className="inline-block mb-4">
                             <Image 
@@ -24,7 +23,6 @@ const Footer = () => {
                         </p>
                     </div>
 
-                    {/* Navigation Links */}
                     <div>
                         <h3 className="font-semibold text-white mb-4">Navigation</h3>
                         <ul className="space-y-2">
@@ -41,7 +39,6 @@ const Footer = () => {
                         </ul>
                     </div>
 
-                    {/* Social Links */}
                     <div>
                         <h3 className="font-semibold text-white mb-4">Suivez-nous</h3>
                         <ul className="space-y-2">
@@ -64,7 +61,6 @@ const Footer = () => {
                     </div>
                 </div>
 
-                {/* Bottom Bar */}
                 <div className="border-t border-white/10 pt-8">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                         <p className="text-white-100 text-sm">

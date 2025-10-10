@@ -43,7 +43,6 @@ const UserProfilePage = async ({ params }: { params: Promise<{ id: string }> }) 
 
             <section className="section_container">
                 <div className="max-w-5xl mx-auto">
-                    {/* Bio Section */}
                     {user.bio ? (
                         <div className="mb-10">
                             <h2 className="text-30-bold mb-4">À propos</h2>
@@ -63,7 +62,6 @@ const UserProfilePage = async ({ params }: { params: Promise<{ id: string }> }) 
 
                     <hr className="divider" />
 
-                    {/* Startups Section */}
                     <div className="mt-10">
                         <div className="flex items-center justify-between mb-7">
                             <h2 className="text-30-bold">

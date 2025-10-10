@@ -31,7 +31,6 @@ export default function UserProfileClient({ user }: UserProfileClientProps) {
 
     return (
         <div className="relative">
-            {/* Profile Button */}
             <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
                 className="relative h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
@@ -51,7 +50,6 @@ export default function UserProfileClient({ user }: UserProfileClientProps) {
                 )}
             </button>
 
-            {/* Dropdown Menu */}
             {isMenuOpen && (
                 <>
                     <div
@@ -95,7 +93,6 @@ export default function UserProfileClient({ user }: UserProfileClientProps) {
                 </>
             )}
 
-            {/* Update Photo Dialog */}
             {isDialogOpen && (
                 <>
                     <div
