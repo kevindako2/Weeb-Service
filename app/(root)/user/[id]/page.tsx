@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Suspense } from "react";
 import StartupCard, { StartupTypeCard } from "@/components/ui/StartupCard";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Author } from "@/sanity/types";
+import { Phone, MapPin, Calendar, Briefcase, Instagram, Twitter, Facebook } from "lucide-react";
 
 export const experimental_ppr = true;
 
@@ -43,22 +43,87 @@ const UserProfilePage = async ({ params }: { params: Promise<{ id: string }> }) 
 
             <section className="section_container">
                 <div className="max-w-5xl mx-auto">
-                    {user.bio ? (
-                        <div className="mb-10">
-                            <h2 className="text-30-bold mb-4">À propos</h2>
-                            <p className="text-16-medium text-black-300 leading-relaxed bg-white p-6 rounded-lg shadow-100">
-                                {user.bio}
+                    <div className="mb-10">
+                        <h2 className="text-30-bold mb-4">À propos</h2>
+                        <div className="bg-white p-6 rounded-lg shadow-100 space-y-6">
+                            <p className="text-16-medium text-black-300 leading-relaxed">
+                                {user.bio || "Aucune bio encore configurée"}
                             </p>
+
+                            {(user.phone || user.country || user.age || user.profession) && (
+                                <div className="pt-6 border-t border-gray-200">
+                                    <h3 className="text-20-semibold mb-4">Informations</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {user.phone && (
+                                            <div className="flex items-center gap-3">
+                                                <Phone className="w-5 h-5 text-primary" />
+                                                <span className="text-16-medium text-black-300">{user.phone}</span>
+                                            </div>
+                                        )}
+                                        {user.country && (
+                                            <div className="flex items-center gap-3">
+                                                <MapPin className="w-5 h-5 text-primary" />
+                                                <span className="text-16-medium text-black-300">{user.country}</span>
+                                            </div>
+                                        )}
+                                        {user.age && (
+                                            <div className="flex items-center gap-3">
+                                                <Calendar className="w-5 h-5 text-primary" />
+                                                <span className="text-16-medium text-black-300">{user.age} ans</span>
+                                            </div>
+                                        )}
+                                        {user.profession && (
+                                            <div className="flex items-center gap-3">
+                                                <Briefcase className="w-5 h-5 text-primary" />
+                                                <span className="text-16-medium text-black-300">{user.profession}</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+
+                            {(user.instagram || user.twitter || user.facebook) && (
+                                <div className="pt-6 border-t border-gray-200">
+                                    <h3 className="text-20-semibold mb-4">Réseaux sociaux</h3>
+                                    <div className="flex flex-wrap gap-4">
+                                        {user.instagram && (
+                                            <a 
+                                                href={user.instagram} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition-opacity"
+                                            >
+                                                <Instagram className="w-5 h-5" />
+                                                Instagram
+                                            </a>
+                                        )}
+                                        {user.twitter && (
+                                            <a 
+                                                href={user.twitter} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 px-4 py-2 bg-blue-400 text-white rounded-lg hover:opacity-90 transition-opacity"
+                                            >
+                                                <Twitter className="w-5 h-5" />
+                                                Twitter
+                                            </a>
+                                        )}
+                                        {user.facebook && (
+                                            <a 
+                                                href={user.facebook} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:opacity-90 transition-opacity"
+                                            >
+                                                <Facebook className="w-5 h-5" />
+                                                Facebook
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                    ) : (
-                        <div className="mb-10">
-                            <div className="bg-white-100 p-6 rounded-lg text-center">
-                                <p className="text-16-medium text-black-300">
-                                    Aucune biographie disponible
-                                </p>
-                            </div>
-                        </div>
-                    )}
+                    </div>
 
                     <div className="mt-10">
                         <div className="flex items-center justify-between mb-7">

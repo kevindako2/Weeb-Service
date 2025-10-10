@@ -4,9 +4,10 @@ import Image from "next/image";
 import { client } from "@/sanity/lib/client";
 import { STARTUPS_BY_AUTHOR_QUERY } from "@/sanity/lib/queries";
 import { Suspense } from "react";
-import StartupCard, { StartupTypeCard } from "@/components/ui/StartupCard";
+import StartupCardWithDelete, { StartupTypeCard } from "@/components/ui/StartupCardWithDelete";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
+import { Phone, MapPin, Calendar, Briefcase, Instagram, Twitter, Facebook } from "lucide-react";
 
 export const experimental_ppr = true;
 
@@ -24,7 +25,14 @@ const ProfilePage = async () => {
             username,
             email,
             image,
-            bio
+            bio,
+            phone,
+            country,
+            age,
+            profession,
+            instagram,
+            twitter,
+            facebook
         }`,
         { email: session.user.email }
     );
@@ -61,37 +69,87 @@ const ProfilePage = async () => {
 
             <section className="section_container">
                 <div className="max-w-5xl mx-auto">
-                    {sanityAuthor?.bio ? (
-                        <div className="mb-10">
-                            <h2 className="text-30-bold mb-4">À propos</h2>
-                            <p className="text-16-medium text-black-300 leading-relaxed bg-white p-6 rounded-lg shadow-100">
-                                {sanityAuthor.bio}
+                    <div className="mb-10">
+                        <h2 className="text-30-bold mb-4">À propos</h2>
+                        <div className="bg-white p-6 rounded-lg shadow-100 space-y-6">
+                            <p className="text-16-medium text-black-300 leading-relaxed">
+                                {sanityAuthor?.bio || "Aucune bio encore configurée"}
                             </p>
-                        </div>
-                    ) : (
-                        <div className="mb-10">
-                            <div className="bg-white-100 p-6 rounded-lg">
-                                <h3 className="text-20-semibold mb-2">Informations du compte</h3>
-                                <div className="space-y-2 text-16-medium text-black-300">
-                                    <p><strong>Nom:</strong> {session.user.name || "Non renseigné"}</p>
-                                    <p><strong>Email:</strong> {session.user.email || "Non renseigné"}</p>
-                                </div>
-                                {!sanityAuthor && (
-                                    <div className="mt-4 p-4 bg-primary/10 rounded-lg">
-                                        <p className="text-14-medium text-black-300">
-                                            💡 Créez votre premier projet pour apparaître dans la communauté !
-                                        </p>
-                                        <Link 
-                                            href="/startup/create" 
-                                            className="inline-block mt-3 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
-                                        >
-                                            Créer un projet
-                                        </Link>
+
+                            {(sanityAuthor?.phone || sanityAuthor?.country || sanityAuthor?.age || sanityAuthor?.profession) && (
+                                <div className="pt-6 border-t border-gray-200">
+                                    <h3 className="text-20-semibold mb-4">Informations</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {sanityAuthor?.phone && (
+                                            <div className="flex items-center gap-3">
+                                                <Phone className="w-5 h-5 text-primary" />
+                                                <span className="text-16-medium text-black-300">{sanityAuthor.phone}</span>
+                                            </div>
+                                        )}
+                                        {sanityAuthor?.country && (
+                                            <div className="flex items-center gap-3">
+                                                <MapPin className="w-5 h-5 text-primary" />
+                                                <span className="text-16-medium text-black-300">{sanityAuthor.country}</span>
+                                            </div>
+                                        )}
+                                        {sanityAuthor?.age && (
+                                            <div className="flex items-center gap-3">
+                                                <Calendar className="w-5 h-5 text-primary" />
+                                                <span className="text-16-medium text-black-300">{sanityAuthor.age} ans</span>
+                                            </div>
+                                        )}
+                                        {sanityAuthor?.profession && (
+                                            <div className="flex items-center gap-3">
+                                                <Briefcase className="w-5 h-5 text-primary" />
+                                                <span className="text-16-medium text-black-300">{sanityAuthor.profession}</span>
+                                            </div>
+                                        )}
                                     </div>
-                                )}
-                            </div>
+                                </div>
+                            )}
+
+                            {(sanityAuthor?.instagram || sanityAuthor?.twitter || sanityAuthor?.facebook) && (
+                                <div className="pt-6 border-t border-gray-200">
+                                    <h3 className="text-20-semibold mb-4">Réseaux sociaux</h3>
+                                    <div className="flex flex-wrap gap-4">
+                                        {sanityAuthor?.instagram && (
+                                            <a 
+                                                href={sanityAuthor.instagram} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition-opacity"
+                                            >
+                                                <Instagram className="w-5 h-5" />
+                                                Instagram
+                                            </a>
+                                        )}
+                                        {sanityAuthor?.twitter && (
+                                            <a 
+                                                href={sanityAuthor.twitter} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 px-4 py-2 bg-blue-400 text-white rounded-lg hover:opacity-90 transition-opacity"
+                                            >
+                                                <Twitter className="w-5 h-5" />
+                                                Twitter
+                                            </a>
+                                        )}
+                                        {sanityAuthor?.facebook && (
+                                            <a 
+                                                href={sanityAuthor.facebook} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:opacity-90 transition-opacity"
+                                            >
+                                                <Facebook className="w-5 h-5" />
+                                                Facebook
+                                            </a>
+                                        )}
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                    )}
+                    </div>
 
                     <div className="mt-10">
                         <div className="flex items-center justify-between mb-7">
@@ -112,7 +170,7 @@ const ProfilePage = async () => {
                             {userStartups && userStartups.length > 0 ? (
                                 <ul className="card_grid">
                                     {userStartups.map((startup: StartupTypeCard) => (
-                                        <StartupCard key={startup._id} post={startup} />
+                                        <StartupCardWithDelete key={startup._id} post={startup} />
                                     ))}
                                 </ul>
                             ) : (

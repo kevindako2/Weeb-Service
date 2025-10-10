@@ -3,6 +3,7 @@ import StartupCard, { StartupTypeCard } from "@/components/ui/StartupCard";
 import { STARTUPS_QUERY } from "@/sanity/lib/queries";
 import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 import { auth } from "@/auth";
+export const dynamic = 'force-dynamic';
 
 export default async function Home({
                                        searchParams,

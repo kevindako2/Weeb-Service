@@ -72,7 +72,14 @@ export const AUTHOR_BY_ID_QUERY =
   username,
   email,
   image,
-  bio
+  bio,
+  phone,
+  country,
+  age,
+  profession,
+  instagram,
+  twitter,
+  facebook
 }`);
 
 export const STARTUPS_BY_AUTHOR_QUERY =

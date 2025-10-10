@@ -35,6 +35,34 @@ export const author = defineType({
             name:'bio',
             type:'text',
         }),
+        defineField({
+            name:'phone',
+            type:'string',
+        }),
+        defineField({
+            name:'country',
+            type:'string',
+        }),
+        defineField({
+            name:'age',
+            type:'number',
+        }),
+        defineField({
+            name:'profession',
+            type:'string',
+        }),
+        defineField({
+            name:'instagram',
+            type:'url',
+        }),
+        defineField({
+            name:'twitter',
+            type:'url',
+        }),
+        defineField({
+            name:'facebook',
+            type:'url',
+        }),
     ],
     preview: {
         select: {
