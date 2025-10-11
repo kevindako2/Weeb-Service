@@ -108,12 +108,25 @@ export const deleteStartup = async (id: string) => {
     }
 
     try {
+        // UPDATED: Récupérer l'ID de l'auteur via son email
+        const authorId = await client.fetch(
+            `*[_type == "author" && email == $email][0]._id`,
+            { email: session.user?.email }
+        );
+
+        if (!authorId) {
+            return parseServerActionResponse({
+                error: "Author not found",
+                status: "ERROR",
+            });
+        }
+
         const startup = await client.fetch(
             `*[_type == "startup" && _id == $id][0]{ author->{ _id } }`,
             { id }
         );
 
-        if (!startup || startup.author._id !== session.id) {
+        if (!startup || startup.author._id !== authorId) {
             return parseServerActionResponse({
                 error: "Unauthorized",
                 status: "ERROR",
@@ -171,21 +184,88 @@ export const updateAuthorProfile = async (
             });
         }
 
+        // Préparer les données à mettre à jour et à supprimer
         const updateData: any = {};
-        if (bio) updateData.bio = bio;
-        if (phone) updateData.phone = phone;
-        if (country) updateData.country = country;
-        if (age) updateData.age = parseInt(age);
-        if (profession) updateData.profession = profession;
-        if (instagram) updateData.instagram = instagram;
-        if (twitter) updateData.twitter = twitter;
-        if (facebook) updateData.facebook = facebook;
-        if (image) updateData.image = image;
+        const unsetData: string[] = [];
 
-        await writeClient
-            .patch(author._id)
-            .set(updateData)
-            .commit();
+        // Bio
+        if (bio && bio.trim()) {
+            updateData.bio = bio.trim();
+        } else {
+            unsetData.push("bio");
+        }
+
+        // Phone
+        if (phone && phone.trim()) {
+            updateData.phone = phone.trim();
+        } else {
+            unsetData.push("phone");
+        }
+
+        // Country
+        if (country && country.trim()) {
+            updateData.country = country.trim();
+        } else {
+            unsetData.push("country");
+        }
+
+        // Age
+        if (age && age.trim()) {
+            updateData.age = parseInt(age);
+        } else {
+            unsetData.push("age");
+        }
+
+        // Profession
+        if (profession && profession.trim()) {
+            updateData.profession = profession.trim();
+        } else {
+            unsetData.push("profession");
+        }
+
+        // Instagram
+        if (instagram && instagram.trim()) {
+            updateData.instagram = instagram.trim();
+        } else {
+            unsetData.push("instagram");
+        }
+
+        // Twitter
+        if (twitter && twitter.trim()) {
+            updateData.twitter = twitter.trim();
+        } else {
+            unsetData.push("twitter");
+        }
+
+        // Facebook
+        if (facebook && facebook.trim()) {
+            updateData.facebook = facebook.trim();
+        } else {
+            unsetData.push("facebook");
+        }
+
+        // Image
+        if (image && image.trim()) {
+            updateData.image = image.trim();
+        } else {
+            unsetData.push("image");
+        }
+
+        // Construire la requête de patch
+        let patchQuery = writeClient.patch(author._id);
+
+        // Ajouter les champs à mettre à jour
+        if (Object.keys(updateData).length > 0) {
+            patchQuery = patchQuery.set(updateData);
+        }
+
+        // Supprimer les champs vides
+        if (unsetData.length > 0) {
+            patchQuery = patchQuery.unset(unsetData);
+        }
+
+        // Exécuter la requête
+        await patchQuery.commit();
 
         return parseServerActionResponse({
             status: "SUCCESS",

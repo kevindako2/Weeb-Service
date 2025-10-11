@@ -48,17 +48,17 @@ const ProfilePage = async () => {
                 <div className="flex flex-col items-center justify-center gap-6">
                     <div className="relative">
                         <Image
-                            src={session.user.image || sanityAuthor?.image || "https://cdn.pixabay.com/photo/2018/04/20/21/10/code-3337044_1280.jpg"}
-                            alt={session.user.name || "User"}
+                            src={sanityAuthor?.image || session.user.image || "https://cdn.pixabay.com/photo/2018/04/20/21/10/code-3337044_1280.jpg"}
+                            alt={sanityAuthor?.name || session.user.name || "User"}
                             width={200}
                             height={200}
                             className="rounded-full object-cover"
                         />
                     </div>
                     <div className="text-center">
-                        <h1 className="heading !mb-2">{session.user.name || sanityAuthor?.name || "Utilisateur"}</h1>
-                        {(session.user.email || sanityAuthor?.email) && (
-                            <p className="sub-heading !max-w-5xl !mb-0">{session.user.email || sanityAuthor?.email}</p>
+                        <h1 className="heading !mb-2">{sanityAuthor?.name || session.user.name || "Utilisateur"}</h1>
+                        {(sanityAuthor?.email || session.user.email) && (
+                            <p className="sub-heading !max-w-5xl !mb-0">{sanityAuthor?.email || session.user.email}</p>
                         )}
                         {sanityAuthor?.username && (
                             <p className="text-16-medium text-white-100 mt-2">@{sanityAuthor.username}</p>
@@ -108,41 +108,51 @@ const ProfilePage = async () => {
                                 </div>
                             )}
 
+                            {/* UPDATED: Social media links now use username format and build proper URLs */}
                             {(sanityAuthor?.instagram || sanityAuthor?.twitter || sanityAuthor?.facebook) && (
                                 <div className="pt-6 border-t border-gray-200">
                                     <h3 className="text-20-semibold mb-4">Réseaux sociaux</h3>
                                     <div className="flex flex-wrap gap-4">
                                         {sanityAuthor?.instagram && (
                                             <a 
-                                                href={sanityAuthor.instagram} 
+                                                href={sanityAuthor.instagram.startsWith('@') 
+                                                    ? `https://instagram.com/${sanityAuthor.instagram.slice(1)}` 
+                                                    : `https://instagram.com/${sanityAuthor.instagram}`
+                                                } 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition-opacity"
                                             >
                                                 <Instagram className="w-5 h-5" />
-                                                Instagram
+                                                {sanityAuthor.instagram}
                                             </a>
                                         )}
                                         {sanityAuthor?.twitter && (
                                             <a 
-                                                href={sanityAuthor.twitter} 
+                                                href={sanityAuthor.twitter.startsWith('@') 
+                                                    ? `https://twitter.com/${sanityAuthor.twitter.slice(1)}` 
+                                                    : `https://twitter.com/${sanityAuthor.twitter}`
+                                                } 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-2 px-4 py-2 bg-blue-400 text-white rounded-lg hover:opacity-90 transition-opacity"
                                             >
                                                 <Twitter className="w-5 h-5" />
-                                                Twitter
+                                                {sanityAuthor.twitter}
                                             </a>
                                         )}
                                         {sanityAuthor?.facebook && (
                                             <a 
-                                                href={sanityAuthor.facebook} 
+                                                href={sanityAuthor.facebook.startsWith('@') 
+                                                    ? `https://facebook.com/${sanityAuthor.facebook.slice(1)}` 
+                                                    : `https://facebook.com/${sanityAuthor.facebook}`
+                                                } 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:opacity-90 transition-opacity"
                                             >
                                                 <Facebook className="w-5 h-5" />
-                                                Facebook
+                                                {sanityAuthor.facebook}
                                             </a>
                                         )}
                                     </div>

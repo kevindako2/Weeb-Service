@@ -82,41 +82,51 @@ const UserProfilePage = async ({ params }: { params: Promise<{ id: string }> }) 
                                 </div>
                             )}
 
+                            {/* UPDATED: Social media links now use username format and build proper URLs */}
                             {(user.instagram || user.twitter || user.facebook) && (
                                 <div className="pt-6 border-t border-gray-200">
                                     <h3 className="text-20-semibold mb-4">Réseaux sociaux</h3>
                                     <div className="flex flex-wrap gap-4">
                                         {user.instagram && (
                                             <a 
-                                                href={user.instagram} 
+                                                href={user.instagram.startsWith('@') 
+                                                    ? `https://instagram.com/${user.instagram.slice(1)}` 
+                                                    : `https://instagram.com/${user.instagram}`
+                                                } 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:opacity-90 transition-opacity"
                                             >
                                                 <Instagram className="w-5 h-5" />
-                                                Instagram
+                                                {user.instagram}
                                             </a>
                                         )}
                                         {user.twitter && (
                                             <a 
-                                                href={user.twitter} 
+                                                href={user.twitter.startsWith('@') 
+                                                    ? `https://twitter.com/${user.twitter.slice(1)}` 
+                                                    : `https://twitter.com/${user.twitter}`
+                                                } 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-2 px-4 py-2 bg-blue-400 text-white rounded-lg hover:opacity-90 transition-opacity"
                                             >
                                                 <Twitter className="w-5 h-5" />
-                                                Twitter
+                                                {user.twitter}
                                             </a>
                                         )}
                                         {user.facebook && (
                                             <a 
-                                                href={user.facebook} 
+                                                href={user.facebook.startsWith('@') 
+                                                    ? `https://facebook.com/${user.facebook.slice(1)}` 
+                                                    : `https://facebook.com/${user.facebook}`
+                                                } 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
                                                 className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:opacity-90 transition-opacity"
                                             >
                                                 <Facebook className="w-5 h-5" />
-                                                Facebook
+                                                {user.facebook}
                                             </a>
                                         )}
                                     </div>

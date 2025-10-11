@@ -1,3 +1,4 @@
+// UPDATED: Redesigned to match Edit Profile page layout and style
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import { client } from "@/sanity/lib/client";
@@ -19,6 +20,7 @@ const EditStartupPage = async ({ params }: { params: Promise<{ id: string }> }) 
         return notFound();
     }
 
+    // Vérifier que l'utilisateur est bien l'auteur du post
     const authorId = await client.fetch(
         `*[_type == "author" && email == $email][0]._id`,
         { email: session.user.email }
@@ -30,8 +32,8 @@ const EditStartupPage = async ({ params }: { params: Promise<{ id: string }> }) 
 
     return (
         <section className="pink_container !min-h-screen">
-            <div className="max-w-3xl mx-auto">
-                <h1 className="heading text-center mb-10">Modifier le projet</h1>
+            <div className="max-w-3xl mx-auto py-10">
+                <h1 className="heading text-center mb-10">Modifier mon projet</h1>
                 <EditStartupForm startup={startup} />
             </div>
         </section>

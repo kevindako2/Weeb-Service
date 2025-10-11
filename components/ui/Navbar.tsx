@@ -3,9 +3,19 @@ import Link from "next/link";
 import { auth } from "@/auth";
 import UserProfileClient from "./UserProfileClient";
 import LoginMenu from "./LoginMenu";
+import { client } from "@/sanity/lib/client";
 
 const Navbar = async () => {
     const session = await auth();
+
+    // Récupérer les données Sanity de l'utilisateur si connecté
+    let sanityAuthor = null;
+    if (session?.user?.email) {
+        sanityAuthor = await client.fetch(
+            `*[_type == "author" && email == $email][0]{ image, name }`,
+            { email: session.user.email }
+        );
+    }
 
     return (
         <header className="px-5 py-2 bg-white shadow font-work-sans">
@@ -28,9 +38,9 @@ const Navbar = async () => {
                         <UserProfileClient 
                             user={{
                                 id: session.user.id || "",
-                                name: session.user.name,
+                                name: sanityAuthor?.name || session.user.name,
                                 email: session.user.email,
-                                image: session.user.image,
+                                image: sanityAuthor?.image || session.user.image,
                             }}
                         />
                     ) : (
